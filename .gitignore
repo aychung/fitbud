@@ -62,3 +62,4 @@ typings/
 .env
 
 database/files/
+client/public/pic/

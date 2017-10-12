@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Image, List } from 'semantic-ui-react';
+import { Button, Container, Image, List } from 'semantic-ui-react';
 
 class ProfilePic extends Component {
   constructor (props) {
@@ -7,25 +7,31 @@ class ProfilePic extends Component {
 
     this.state = {
       file: '',
-      // imagePreviewUrl: '',
+      imgSrc: '',
     }
 
     this.clickImg = this.clickImg.bind(this);
     this.setFile = this.setFile.bind(this);
+    this.sendFile = this.sendFile.bind(this);
   }
 
   clickImg() {
     this.inputElement.click();
   }
-  setFile(event) {
+
+  setFile(e) {
     this.setState({
-      file: event.target.files[0],
+      file: e.target.files[0],
     });
-    
+    this.sendFile();
+  }
+
+  sendFile() {
     //console.log('file set -> start upload image');
     var data = new FormData();
     // data.append('username', '');
-    data.append('file', event.target.files[0], event.target.files[0].name);
+
+    data.append('file', this.state.file, this.state.file.name);
 
     fetch ('/profile/pic', {
       method: 'POST',
@@ -35,14 +41,20 @@ class ProfilePic extends Component {
       if(res.ok) {
         console.log('img sent to server');
       }
-    })
+    });
+  }
+
+  noPic() {
+    this.setState({
+      imgSrc: this.props.default,
+    });
   }
 
   render() {
     return (
       <Container style={{margin: '30px'}}>
 
-        <Image onClick={this.clickImg} src={this.props.user} size='small' shape='circular' centered style={{margin: 'auto'}} />
+        <Image onClick={this.clickImg} src={`/pic/usr/${this.props.user}`} size='small' shape='circular' centered style={{margin: 'auto'}} />
         <input ref={input => this.inputElement = input} id="fileInput" style={{visibility: 'hidden'}} type="file" onChange={this.setFile} accept="image/png, image/jpeg"/>
 
       
@@ -60,3 +72,5 @@ class ProfilePic extends Component {
 }
 
 export default ProfilePic;
+
+

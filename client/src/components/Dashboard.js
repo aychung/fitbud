@@ -73,7 +73,7 @@ class Dashboard extends Component {
     return (
       <Container style={{marginTop: '20px'}}>
 
-        <ProfilePic user={this.user}/>
+        <ProfilePic user={this.props.user.name} default={this.user}/>
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
