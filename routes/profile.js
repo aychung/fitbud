@@ -6,7 +6,7 @@ var db = require('../database/index.js');
 const multer  = require('multer')
 
 const storage = multer.diskStorage({
-  destination: './database/files',
+  destination: './database/files/usr',
   filename(req, file, cb) {
     var fname = req.user.name;
     console.log(file.mimetype);
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.post('/file', upload.single('file'), (req, res) => {
+router.post('/pic', upload.single('file'), (req, res) => {
   console.log('here');
   console.log('file body:', req.body.name, req.body.filename);
   console.log('file file:', req.file);
