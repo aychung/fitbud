@@ -76,7 +76,6 @@ app.use('/workout', routeWorkout);
 app.use('/dashboard', routeDashboard);
 app.use('/logout', routeLogout);
 
-
 // middleware function to check if this is one of the protected routes
 
 function checkAuth(req, res, next) {

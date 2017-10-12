@@ -12,7 +12,7 @@ class ProfilePic extends Component {
 
     this.clickImg = this.clickImg.bind(this);
     this.setFile = this.setFile.bind(this);
-    this.sendFile = this.sendFile.bind(this);
+    this.noPic = this.noPic.bind(this);
   }
 
   clickImg() {
@@ -23,15 +23,11 @@ class ProfilePic extends Component {
     this.setState({
       file: e.target.files[0],
     });
-    this.sendFile();
-  }
-
-  sendFile() {
     //console.log('file set -> start upload image');
     var data = new FormData();
     // data.append('username', '');
 
-    data.append('file', this.state.file, this.state.file.name);
+    data.append('file', e.target.files[0], e.target.files[0].name);
 
     fetch ('/profile/pic', {
       method: 'POST',
@@ -54,7 +50,7 @@ class ProfilePic extends Component {
     return (
       <Container style={{margin: '30px'}}>
 
-        <Image onClick={this.clickImg} src={`/pic/usr/${this.props.user}`} size='small' shape='circular' centered style={{margin: 'auto'}} />
+        <Image onError={this.noPic} onClick={this.clickImg} src={`/pic/usr/${this.props.user}`} size='small' shape='circular' centered style={{margin: 'auto'}} />
         <input ref={input => this.inputElement = input} id="fileInput" style={{visibility: 'hidden'}} type="file" onChange={this.setFile} accept="image/png, image/jpeg"/>
 
       
