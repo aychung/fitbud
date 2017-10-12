@@ -7,7 +7,7 @@ class ProfilePic extends Component {
 
     this.state = {
       file: '',
-      imgSrc: '',
+      imgSrc: true,
     }
 
     this.clickImg = this.clickImg.bind(this);
@@ -42,7 +42,7 @@ class ProfilePic extends Component {
 
   noPic() {
     this.setState({
-      imgSrc: this.props.default,
+      imgSrc: false,
     });
   }
 
