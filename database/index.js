@@ -302,8 +302,16 @@ var serachPostings = function(term) {
 }
 
 var updateProfilePic = function(username) {
+	var imgPath = '';
+  for (var i = 0; i < username.length; i++) {
+    if (username.charAt(i) === ' ') {
+      imgPath += '_';
+    } else {
+      imgPath += username.charAt(i);
+    }
+  }
 	var query = `UPDATE users SET photo=? WHERE name=?`;
-	var value = [`/pic/usr/${username}`, username];
+	var value = [`/pic/usr/${imgPath}`, username];
 
 	return new Promise((resolve, reject) => {
 		connection.query(query, value, (err, result) => {

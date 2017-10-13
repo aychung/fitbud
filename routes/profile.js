@@ -8,13 +8,16 @@ const multer  = require('multer')
 const storage = multer.diskStorage({
   destination: './client/public/pic/usr',
   filename(req, file, cb) {
-    var fname = req.user.name;
-    // console.log(file.mimetype);
-    // if(file.mimetype === 'image/jpeg') {
-    //   fname += '.jpg';
-    // } else if (file.mimtype === 'image/png') {
-    //   fname += '.png';
-    // }
+    var fname = '';
+
+    for (var i = 0; i < req.user.name.length; i++) {
+      if (req.user.name.charAt(i) === ' ') {
+        fname += '_';
+      } else {
+        fname += req.user.name.charAt(i);
+      }
+    }
+    console.log(fname);
     cb(null, fname);
   },
 });
