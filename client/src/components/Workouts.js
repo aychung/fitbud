@@ -6,6 +6,7 @@ import WorkoutDropdown from './WorkoutDropdown';
 class Workouts extends Component {
   constructor(props) {
     super(props);
+    this.event = [1,2,3,4,5,9,'a'];
   }
 
   render() {
@@ -14,7 +15,7 @@ class Workouts extends Component {
         {this.props.data.map(listing => (
           <Card>
             <Card.Content>
-              <Image src={this.props.user} size='mini' floated='left'/>
+              <Image src={`${this.event[listing.currentEvent]}_on.svg`} size='mini' floated='left'/>
               <Card.Header>{listing.title}</Card.Header>
               <Card.Meta>{listing.location}</Card.Meta>
               <Card.Description>{`${listing.details} on ${listing.date} for ${listing.duration} hour(s)`}</Card.Description>

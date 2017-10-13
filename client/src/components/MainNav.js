@@ -48,7 +48,7 @@ class MainNav extends Component {
         if (data[0].length !== 0) {
           results.push({name:'Users', results:[]});
           data[0].forEach(val => {
-            results[0].results.push({title:val.name, description:val.email});
+            results[0].results.push({title:val.name, description:val.email, image:val.photo});
           });
         }
         if (data[1].length !== 0) {

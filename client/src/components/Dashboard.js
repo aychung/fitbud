@@ -77,7 +77,7 @@ class Dashboard extends Component {
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
+        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.props.user} update={this.update} dataPull={this.dataPull} />)}
         {this.state.view === 'my requests' && ([<Requests />])}
         {this.state.view === 'upcoming workouts' && ([<Invites />])}
         

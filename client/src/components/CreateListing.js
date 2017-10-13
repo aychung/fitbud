@@ -17,7 +17,9 @@ class CreateListing extends Component {
       event: [1,2,3,4,5,9,'a'],
       currentEvent: 1,
       currentLevel: 'Intermediate',
-      level: ['Beginner','Intermediate','Advanced']
+      level: ['Beginner','Intermediate','Advanced'],
+      file: '',
+      imagePreviewUrl: '',
     }
 
     this.options = _.range(1, 11).map(num => {
@@ -26,7 +28,9 @@ class CreateListing extends Component {
         text: num > 1 ? num + ' buddies' : num + ' buddy',
         value: num
       }
-    })
+    });
+    this.clickEImg = this.clickEImg.bind(this);
+    this.setFile = this.setFile.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +39,7 @@ class CreateListing extends Component {
     });
   }
 
-  toggleVisibility = () => {
+  toggleVisibility = (e) => {
     this.setState({private: !this.state.private});
   }
 
@@ -53,6 +57,7 @@ class CreateListing extends Component {
     formData.currentLevel = this.state.currentLevel;
     formData.currentEvent = this.state.currentEvent;
     formData.private = this.state.private;
+    formData.imgPath = this.state.file.name;
     formData.date = new Date(formData.date).toISOString().slice(0, 19).replace('T', ' ');
     var options = {
       headers: {
@@ -60,7 +65,7 @@ class CreateListing extends Component {
       },
       method: 'POST',
       credentials: 'include',
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     }
 
     fetch('/postings', options)
@@ -75,8 +80,49 @@ class CreateListing extends Component {
             submit: false
           })
         }
-      })
+      });
+    if (this.state.file) {
+      var data = new FormData();
+      data.append('title', formData.title);
+      data.append('file', this.state.file, this.state.file.name);
+      fetch ('/postings/pic', {
+        method: 'POST',
+        credentials: 'include',
+        body: data,
+      }).then(res => {
+        if(res.ok) {
+          console.log('img sent to server');
+        }
+      });
+    }
   };
+
+  setFile(e) {
+    var reader = new FileReader();
+    var file = e.target.files[0];
+
+    console.log(this.state.formData);
+
+    if(file) {
+      reader.onloadend = () =>  {
+        console.log('here2');
+        this.setState({
+          file: file,
+          imagePreviewUrl: reader.result,
+        });
+      }
+      reader.readAsDataURL(file);
+    } else {
+      this.setState({
+        file: '',
+        imagePreviewUrl: '',
+      });
+    }
+  }
+
+  clickEImg () {
+    this.inputElement.click();
+  }
 
   componentDidMount() {
     this.setState({visible: true})
@@ -200,10 +246,26 @@ class CreateListing extends Component {
         }}
       />
     )
-
+// style={{'paddingBottom':'20px'}} //'paddingRight':'90px'
     const toggleInput = (
-      <div style={{'paddingBottom':'20px'}}>
+      <div >
         <Radio  slider label={this.state.private ? 'Public' : 'Private'} onChange={this.toggleVisibility} />
+      </div>
+    )
+    const eventImg = 
+    (
+      <div >
+        <Label onClick={this.clickEImg}>
+          <Icon name='file image outline' size='big' disabled={!(this.state.file)}/> Upload Image
+        </Label>
+        <input 
+          ref={input => this.inputElement = input} 
+          id="fileInput" 
+          style={{visibility: 'hidden'}} 
+          type="file" 
+          onChange={this.setFile} 
+          accept="image/png, image/jpeg"
+        />
       </div>
     )
 
@@ -247,6 +309,12 @@ class CreateListing extends Component {
       />
     );
 
+    let {imagePreviewUrl} = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = (<Image src={imagePreviewUrl} fluid />);
+    }
+
     return (
       <Transition visible={this.state.visible} animation='fade' duration={1000}>
         <div className='login-form'>
@@ -262,9 +330,23 @@ class CreateListing extends Component {
             textAlign='center'
             style={{ height: '100%',
                      marginTop: '3em',
-                     paddingLeft: '10em',
+
                      marginBottom: '3em' }}
           >
+
+            <Grid.Column width={3} >
+              <Transition visible={this.state.file ? true : false} animation='fade left' duration={200}>
+                <div style={{'paddingTop':'250px'}}>
+                  <Segment raised>
+                    <Header as='h3' color='teal' textAlign='center'>
+                      Event Image
+                    </Header>
+                    {$imagePreview}
+
+                  </Segment>
+                </div>
+              </Transition>
+            </Grid.Column>
             <Grid.Column width={16} style={{ maxWidth: 550 }}>
               <Header as='h2' color='teal' textAlign='center'>
                 Find your next buddy
@@ -285,7 +367,7 @@ class CreateListing extends Component {
                   { durationInput }
                   { buddiesInput }
                 </Form.Group >
-                <Segment attached='bottom'>
+                <Segment >
                   { sectionInput }
                   <div style={{'padding':'20px'}}>
                      <Button.Group >
@@ -298,7 +380,14 @@ class CreateListing extends Component {
                       }
                     </Button.Group>
                   </div>
-                  { toggleInput }
+                  <Grid  columns={2}>
+                    <Grid.Column>
+                      { eventImg }
+                    </Grid.Column>
+                    <Grid.Column>
+                      { toggleInput }
+                    </Grid.Column>
+                  </Grid>
                 </Segment>
                 { detailsInput }
                 <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE LISTING</Button> 
