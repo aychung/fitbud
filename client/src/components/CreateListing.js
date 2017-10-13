@@ -24,7 +24,6 @@ class CreateListing extends Component {
       imagePreviewUrl: '',
       address: 'San Francisco, CA'
     };
-
     this.options = _.range(1, 11).map(num => {
       return {
         key: num,
@@ -32,7 +31,6 @@ class CreateListing extends Component {
         value: num
       }
     });
-
     this.clickEImg = this.clickEImg.bind(this);
     this.setFile = this.setFile.bind(this);
   }
@@ -42,6 +40,7 @@ class CreateListing extends Component {
       visible: true
     });
   }
+
 
   handleAddressFocus = () => { !window.autocomplete && this.initializeAutocomplete(); }
 

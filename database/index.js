@@ -60,6 +60,7 @@ var checkUser = function(username, callback) {
 		if (err) {
 			//console.log('error when finding user', err);
 		} else{
+			// console.log('result of finding a user', dbUserResult);
 			if (dbUserResult.length === 0) {
 				callback(err, null);
 			}
@@ -125,6 +126,7 @@ var getWorkouts = function(id, callback) {
           result[i].ownerPhoto = usrImgPath;
         }
       }
+			// console.log('DB POSTING RESULTS:', result);
 			callback(result);
 		}
 	});
@@ -308,6 +310,7 @@ var updateFriendsRequest = function(originator, receiver, callback) {
     } else {
       console.log('updated friends request to accept!', result);
       this.updateFriendsNum(originator, receiver, (result) => console.log(result));
+      // console.log('updated friends request to accept!', result);
       callback(result);
     }
   })

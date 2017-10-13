@@ -53,6 +53,7 @@ router.post('/', (req, res) => {
     private: req.body.private,
     currentEvent: req.body.currentEvent,
     currentLevel: req.body.currentLevel,
+    // imgPath: req.body.imgPath,
   };
 
   db.createWorkout(workoutObj, (err, dbResult) => {
