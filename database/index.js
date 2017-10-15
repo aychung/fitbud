@@ -304,6 +304,7 @@ var updateFriendsRequest = function(originator, receiver, callback) {
     if (err) {
       console.log('error updating friend request', err);
     } else {
+
       console.log('updated friends request to accept!', result);
       this.updateFriendsNum(originator, receiver, (result) => console.log(result));
       // console.log('updated friends request to accept!', result);

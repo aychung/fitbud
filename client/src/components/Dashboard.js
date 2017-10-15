@@ -75,6 +75,7 @@ class Dashboard extends Component {
     return (
       <Container style={{marginTop: '20px'}}>
         <ProfilePic user={(this.props.user && this.props.user.photo) || ''} default={this.user}/>
+
         <Profile user={this.props.user}/>
 
         <DashNav

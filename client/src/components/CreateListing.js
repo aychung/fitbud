@@ -22,6 +22,7 @@ class CreateListing extends Component {
       level: ['Beginner','Intermediate','Advanced'],
       file: '',
       imagePreviewUrl: '',
+
       address: 'San Francisco, CA'
     };
     this.options = _.range(1, 11).map(num => {
@@ -40,7 +41,6 @@ class CreateListing extends Component {
       visible: true
     });
   }
-
 
   handleAddressFocus = () => { !window.autocomplete && this.initializeAutocomplete(); }
 
@@ -267,6 +267,7 @@ class CreateListing extends Component {
         <Radio  slider label={this.state.private ? 'Public' : 'Private'} onChange={this.toggleVisibility} />
       </div>
     )
+
     const eventImg =
     (
       <div >
